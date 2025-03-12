@@ -1,47 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import nextConnect from 'next-connect';
-import multer from 'multer';
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: './public/uploads',
-    filename: (req, file, cb) => cb(null, file.originalname),
-  }),
-  fileFilter: (req, file, cb) => {
-
-    if (file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Please upload an Excel (.xlsx) file.'), false);
-    }
-  },
-});
-
-const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
-  onError(error, req, res) {
-    res.status(501).json({ error: `Something went wrong: ${error.message}` });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method ${req.method} not allowed` });
-  },
-});
-
-apiRoute.use(upload.single('file'));
-
-apiRoute.post((req, res) => {
-  const { polesCost, mvCablesCost, lvCablesCost, transformersCost, dropCablesCost } = req.body;
-
-  res.status(200).json({
-    data: 'Upload successful',
-    fields: {
-      polesCost,
-      mvCablesCost,
-      lvCablesCost,
-      transformersCost,
-      dropCablesCost,
-    },
-  });
-});
+import formidable from 'formidable';
+import fs from 'fs';
+import path from 'path';
 
 export const config = {
   api: {
@@ -49,4 +9,43 @@ export const config = {
   },
 };
 
-export default apiRoute;
+const uploadDir = path.join(process.cwd(), '/uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    const form = new formidable.IncomingForm({
+      uploadDir,
+      keepExtensions: true,
+    });
+
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        console.error('Error parsing form data:', err);
+        return res.status(500).json({ message: 'Error parsing form data' });
+      }
+
+      const file = files.file;
+      if (!file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      const fileData = file as formidable.File;
+      const newFilePath = path.join(uploadDir, fileData.originalFilename || fileData.newFilename);
+
+      fs.rename(fileData.filepath, newFilePath, (renameErr) => {
+        if (renameErr) {
+          console.error('Error saving the file:', renameErr);
+          return res.status(500).json({ message: 'Error saving the file' });
+        }
+        return res.status(200).json({ message: 'File uploaded successfully', fields, filePath: newFilePath });
+      });
+    });
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
