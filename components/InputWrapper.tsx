@@ -2,8 +2,8 @@
 
 import dynamic from 'next/dynamic';
 
-const Input = dynamic(() => import('./input'), { ssr: false });
+const UploadForm = dynamic(() => import('./UploadForm'), { ssr: false });
 
 export default function InputWrapper() {
-  return <Input />;
+  return <UploadForm />;
 }
