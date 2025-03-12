@@ -1,5 +1,6 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
 
+/** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
   slug: {
     type: "string",
@@ -40,7 +41,7 @@ export default makeSource({
   esbuildOptions(options) {
     return {
       ...options,
-      target: "es2017",
+      target: "es2017", // or "esnext"
     }
   },
 })
