@@ -40,7 +40,7 @@ export default makeSource({
   esbuildOptions(options) {
     return {
       ...options,
-      target: "es2017", // or "esnext" if preferred
+      target: "es2017",
     }
   },
 })
