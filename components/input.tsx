@@ -37,7 +37,6 @@ export default function ExcelProcessor() {
     });
 
     if (response.ok) {
-      // Process the response as a blob for file download
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
