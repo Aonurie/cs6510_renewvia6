@@ -1,102 +1,92 @@
-"use client";
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
-import { useState } from "react";
-
-export default function Input() {
+const Input: React.FC = () => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
-  const [costPoles, setCostPoles] = useState("");
-  const [costMVCables, setCostMVCables] = useState("");
-  const [costLVCables, setCostLVCables] = useState("");
-  const [costTransformers, setCostTransformers] = useState("");
-  const [costDropCables, setCostDropCables] = useState("");
+  const [polesCost, setPolesCost] = useState<string>('');
+  const [mvCablesCost, setMvCablesCost] = useState<string>('');
+  const [lvCablesCost, setLvCablesCost] = useState<string>('');
+  const [transformersCost, setTransformersCost] = useState<string>('');
+  const [dropCablesCost, setDropCablesCost] = useState<string>('');
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setExcelFile(e.target.files[0]);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setExcelFile(event.target.files[0]);
+      // Optional: process the file using libraries like SheetJS
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!excelFile) {
-      alert("Please upload an Excel file");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("excelFile", excelFile);
-    formData.append("costPoles", costPoles);
-    formData.append("costMVCables", costMVCables);
-    formData.append("costLVCables", costLVCables);
-    formData.append("costTransformers", costTransformers);
-    formData.append("costDropCables", costDropCables);
-
-    const response = await fetch("/api/process-excel", {
-      method: "POST",
-      body: formData,
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    // Handle form submission logic (e.g., validation or sending data to an API)
+    console.log({
+      excelFile,
+      polesCost,
+      mvCablesCost,
+      lvCablesCost,
+      transformersCost,
+      dropCablesCost,
     });
-
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "processed.xlsx";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } else {
-      console.error("Failed to process the Excel file.");
-    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Upload Excel File:</label>
-        <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
-      </div>
-      <div>
-        <label>Cost Poles:</label>
+        <label htmlFor="excel-upload">Upload Excel File:</label>
         <input
-          type="text"
-          value={costPoles}
-          onChange={(e) => setCostPoles(e.target.value)}
+          type="file"
+          id="excel-upload"
+          accept=".xlsx,.xls"
+          onChange={handleFileChange}
         />
       </div>
       <div>
-        <label>Cost MV Cables:</label>
+        <label>Poles Cost:</label>
         <input
-          type="text"
-          value={costMVCables}
-          onChange={(e) => setCostMVCables(e.target.value)}
+          type="number"
+          placeholder="Enter Poles cost"
+          value={polesCost}
+          onChange={(e) => setPolesCost(e.target.value)}
         />
       </div>
       <div>
-        <label>Cost LV Cables:</label>
+        <label>MV Cables Cost:</label>
         <input
-          type="text"
-          value={costLVCables}
-          onChange={(e) => setCostLVCables(e.target.value)}
+          type="number"
+          placeholder="Enter MV Cables cost"
+          value={mvCablesCost}
+          onChange={(e) => setMvCablesCost(e.target.value)}
         />
       </div>
       <div>
-        <label>Cost Transformers:</label>
+        <label>LV Cables Cost:</label>
         <input
-          type="text"
-          value={costTransformers}
-          onChange={(e) => setCostTransformers(e.target.value)}
+          type="number"
+          placeholder="Enter LV Cables cost"
+          value={lvCablesCost}
+          onChange={(e) => setLvCablesCost(e.target.value)}
         />
       </div>
       <div>
-        <label>Cost Drop Cables:</label>
+        <label>Transformers Cost:</label>
         <input
-          type="text"
-          value={costDropCables}
-          onChange={(e) => setCostDropCables(e.target.value)}
+          type="number"
+          placeholder="Enter Transformers cost"
+          value={transformersCost}
+          onChange={(e) => setTransformersCost(e.target.value)}
         />
       </div>
-      <button type="submit">Process Excel</button>
+      <div>
+        <label>Drop Cables Cost:</label>
+        <input
+          type="number"
+          placeholder="Enter Drop Cables cost"
+          value={dropCablesCost}
+          onChange={(e) => setDropCablesCost(e.target.value)}
+        />
+      </div>
+      <button type="submit">Submit</button>
     </form>
   );
-}
+};
+
+export default Input;
