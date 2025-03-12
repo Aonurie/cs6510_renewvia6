@@ -15,7 +15,7 @@ const UploadForm = () => {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (!file) {
       setMessage('Please select an Excel file.');
       return;
@@ -28,21 +28,19 @@ const UploadForm = () => {
     formData.append('transformersCost', transformersCost);
     formData.append('dropCablesCost', dropCablesCost);
 
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    //test
+    console.log('File:', file);
+    console.log('Poles Cost:', polesCost);
+    console.log('MV Cables Cost:', mvCablesCost);
+    console.log('LV Cables Cost:', lvCablesCost);
+    console.log('Transformers Cost:', transformersCost);
+    console.log('Drop Cables Cost:', dropCablesCost);
 
-      if (res.ok) {
-        setMessage('Upload successful!');
-      } else {
-        setMessage('Upload failed.');
-      }
-    } catch (error) {
-      setMessage('Error uploading file.');
-      console.error(error);
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
     }
+
+    setMessage('Form data logged to console.');
   };
 
   return (
