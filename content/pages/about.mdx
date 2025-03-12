@@ -2,8 +2,11 @@
 title: Power Grid Generation Project
 ---
 
+import { Suspense } from 'react';
 import InputWrapper from '../../components/InputWrapper';
 
 Use the form below to upload an Excel file and provide cost inputs:
 
-<InputWrapper />
+<Suspense fallback={<div>Loading...</div>}>
+  <InputWrapper />
+</Suspense>
