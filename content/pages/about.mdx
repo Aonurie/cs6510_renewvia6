@@ -2,7 +2,8 @@
 title: Power Grid Generation Project
 ---
 
-import UploadForm from '../../components/UploadForm'
+import dynamic from 'next/dynamic';
+const UploadForm = dynamic(() => import('../../components/UploadForm'), { ssr: false });
 
 Use the form below to upload an Excel file and provide cost inputs:
 
