@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function ExcelProcessor() {
+export default function input() {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [costPoles, setCostPoles] = useState("");
   const [costMVCables, setCostMVCables] = useState("");
