@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-const Input = dynamic(() => import("../components/input"), { ssr: false });
+const Input = dynamic(() => import(".../../components/input"), { ssr: false });
 
 const AboutPage = () => {
   return (
