@@ -29,7 +29,6 @@ const UploadForm: React.FC = () => {
     if (excelFile) {
       formData.append('file', excelFile);
     }
-    // Append additional text inputs
     Object.keys(inputs).forEach((key) => {
       formData.append(key, inputs[key as keyof typeof inputs]);
     });
@@ -53,7 +52,6 @@ const UploadForm: React.FC = () => {
           onChange={handleFileChange}
         />
       </div>
-
       <div>
         <label htmlFor="polesCost">Poles Cost:</label>
         <input
@@ -64,7 +62,6 @@ const UploadForm: React.FC = () => {
           onChange={handleInputChange}
         />
       </div>
-
       <div>
         <label htmlFor="mvCablesCost">MV Cables Cost:</label>
         <input
@@ -75,7 +72,6 @@ const UploadForm: React.FC = () => {
           onChange={handleInputChange}
         />
       </div>
-
       <div>
         <label htmlFor="lvCablesCost">LV Cables Cost:</label>
         <input
@@ -86,7 +82,6 @@ const UploadForm: React.FC = () => {
           onChange={handleInputChange}
         />
       </div>
-
       <div>
         <label htmlFor="transformersCost">Transformers Cost:</label>
         <input
@@ -97,7 +92,6 @@ const UploadForm: React.FC = () => {
           onChange={handleInputChange}
         />
       </div>
-
       <div>
         <label htmlFor="dropCablesCost">Drop Cables Cost:</label>
         <input
@@ -108,7 +102,6 @@ const UploadForm: React.FC = () => {
           onChange={handleInputChange}
         />
       </div>
-
       <button type="submit">Submit</button>
     </form>
   );
