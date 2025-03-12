@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 const Input: React.FC = () => {
@@ -11,13 +12,11 @@ const Input: React.FC = () => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setExcelFile(event.target.files[0]);
-      // Optional: process the file using libraries like SheetJS
     }
   };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic (e.g., validation or sending data to an API)
     console.log({
       excelFile,
       polesCost,
