@@ -1,9 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-const Input = dynamic(() => import("./input"), { ssr: false });
+const Input = dynamic(() => import('./input'), { ssr: false });
 
-export default function InputWrapper() {
+export default function ClientInput() {
   return <Input />;
 }
