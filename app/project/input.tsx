@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const input: React.FC = () => {
+const Input: React.FC = () => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [polesCost, setPolesCost] = useState("");
   const [mvCablesCost, setMvCablesCost] = useState("");
@@ -57,4 +57,4 @@ const input: React.FC = () => {
   );
 };
 
-export default input;
+export default Input;
