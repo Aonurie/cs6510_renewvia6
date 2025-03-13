@@ -31,6 +31,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".contentlayer/generated"
-  ],
+, "content/pages/about.mdx"  ],
   "exclude": ["node_modules"]
 }
