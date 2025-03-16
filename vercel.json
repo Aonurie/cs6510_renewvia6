@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/*": {
+        "runtime": "@edge-functions/python@latest"
+      }
+    }
+  }
+  
