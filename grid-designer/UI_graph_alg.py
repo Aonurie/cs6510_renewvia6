@@ -7,6 +7,9 @@ import networkx as nx
 from scipy.spatial import KDTree
 from sklearn.neighbors import BallTree
 
+import sys
+import json
+
 # calculates Haversine dist between two points on Earth (in meters)
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371000  # Earth's radius in meters
@@ -225,7 +228,7 @@ def visualize(buildings, poles, G, power_source):
     plt.show()
 
 
-def main(excel_path):
+def main2(excel_path):
     # Read in user-given coordinate data
     df = load_data(excel_path)
     buildings = df[df['Name'] != 'Power Source'][['Latitude', 'Longitude']].values
@@ -258,7 +261,25 @@ def main(excel_path):
     return final_poles, G
 
 # Example usage:
-filtered_poles, graph = main("buildingcoordinate1.xlsx")
+filtered_poles, graph = main2("buildingcoordinate1.xlsx")
+
+def main():
+    if len(sys.argv) != 4:
+        print(json.dumps({"error": "Invalid arguments"}))
+        return
+
+    data = {
+        "Poles Cost": sys.argv[1],
+        "MV Cables Cost": sys.argv[2],
+        "LV Cables Cost": sys.argv[3],
+    }
+
+    print(json.dumps({"message": "Script executed successfully", "data": data}))
+
+
+if __name__ == "__main__":
+    main()
+
 
 #### TO-DO ####
 # Connect to UI so excel is given by user & resulting graph is shown on website
