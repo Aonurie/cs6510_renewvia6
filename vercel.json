@@ -1,8 +1,6 @@
 {
   "version": 2,
   "functions": {
-    "api/grid-designer/*.py": {
-      "runtime": "vercel-python@3.9"
-    }
+    "api/grid-designer/*.py": {}
   }
 }
