@@ -14,29 +14,12 @@ const Input: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    const formData = {
-      polesCost,
-      mvCablesCost,
-      lvCablesCost,
-    };
-  
-    try {
-      const response = await fetch("/api/run-script", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-  
-      const data = await response.json();
-      console.log("Server Response:", data);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
-  
+    console.log("Excel File:", excelFile);
+    console.log("Poles Cost:", polesCost);
+    console.log("MV Cables Cost:", mvCablesCost);
+    console.log("LV Cables Cost:", lvCablesCost);
 
   return (
     <form onSubmit={handleSubmit}>
