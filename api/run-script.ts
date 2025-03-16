@@ -11,7 +11,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { polesCost, mvCablesCost, lvCablesCost } = req.body;
 
   // Define the path to the Python script inside Vercel's function folder
-  const scriptPath = path.join(process.cwd(), "grid-designer", "UI_graph_alg.py");
+  const scriptPath = path.join(process.cwd(), "api", "grid-designer", "UI_graph_alg.py");
 
   // Ensure script exists
   if (!fs.existsSync(scriptPath)) {
@@ -19,7 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // Run Python script with arguments
-  const process = spawn("python3", [
+  const pythonProcess = spawn("python3", [
     scriptPath,
     polesCost,
     mvCablesCost,
@@ -29,15 +29,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   let output = "";
   let errorOutput = "";
 
-  process.stdout.on("data", (data) => {
+  pythonProcess.stdout.on("data", (data) => {
     output += data.toString();
   });
 
-  process.stderr.on("data", (data) => {
+  pythonProcess.stderr.on("data", (data) => {
     errorOutput += data.toString();
   });
 
-  process.on("close", (code) => {
+  pythonProcess.on("close", (code) => {
     if (code === 0) {
       return res.status(200).json({ message: "Script executed", output });
     } else {
