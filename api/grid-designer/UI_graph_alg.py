@@ -298,3 +298,22 @@ if __name__ == "__main__":
     # pole cost
     # LV cable cost
     # MV cable cost
+
+# cost calc function
+def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G):
+    pole_count = 0
+    lv_cab_count = 0
+    mv_cab_count = 0
+    for node in G.nodes:
+        if isinstance(node, str) == False:
+            pole_count += 1
+    for edge in G.edges:
+        dist = G.get_edge_data(*edge)["weight"]
+        if dist <= 30:
+            lv_cab_count +=1
+        else:
+            mv_cab_count +=1
+
+    total_cost = pole_cost * pole_count + lv_cable_cost * lv_cab_count + mv_cable_cost * mv_cab_count
+
+    return total_cost
