@@ -6,7 +6,7 @@ export default function Home() {
     <div className="prose dark:prose-invert">
       {/* Static Content */}
       <section>
-        <h1>P6 Renewvia-Design</h1>
+        <h1 className="mt-4">P6 Renewvia-Design</h1>
         <p>
         The Renewvia Energy project aims to develop an electricity grid design optimizer using machine learning. The goal is to optimize pole and cable placement and cost to provide reliable electricity for areas in Kenya.
 
