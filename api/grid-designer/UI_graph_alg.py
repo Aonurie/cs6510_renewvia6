@@ -300,12 +300,15 @@ if __name__ == "__main__":
     # MV cable cost
 
 # cost calc function
-def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G):
+def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G, buildings, power_source):
     pole_count = 0
     lv_cab_count = 0
     mv_cab_count = 0
-    for node in G.nodes:
-        if isinstance(node, str) == False:
+
+    non_pole = tuple(map(tuple,np.vstack([buildings, power_source])))
+
+    for ind, pos in G.nodes(data=True):
+        if pos['pos'] not in non_pole:
             pole_count += 1
     for edge in G.edges:
         dist = G.get_edge_data(*edge)["weight"]
