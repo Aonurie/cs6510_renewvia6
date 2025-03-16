@@ -20,8 +20,6 @@ const Input: React.FC = () => {
     console.log("Poles Cost:", polesCost);
     console.log("MV Cables Cost:", mvCablesCost);
     console.log("LV Cables Cost:", lvCablesCost);
-    console.log("Transformers Cost:", transformersCost);
-    console.log("Drop Cables Cost:", dropCablesCost);
   };
 
   return (
