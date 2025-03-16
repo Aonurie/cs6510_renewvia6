@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "preview": "next build && next start",
-    "start": "next start",
-    "lint": "next lint"
-  },
+  "dev": "node --max-old-space-size=4096 node_modules/next/dist/bin/next dev",
+  "build": "node --max-old-space-size=4096 node_modules/next/dist/bin/next build",
+  "preview": "node --max-old-space-size=4096 node_modules/next/dist/bin/next build && node --max-old-space-size=4096 node_modules/next/dist/bin/next start",
+  "start": "node --max-old-space-size=4096 node_modules/next/dist/bin/next start",
+  "lint": "next lint"
+},
   "dependencies": {
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "18.16.1",
