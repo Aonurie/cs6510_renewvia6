@@ -191,4 +191,3 @@ zipp = "==3.17.0"
 
 [requires]
 python_version = "3.9"
-python_full_version = "3.9.20"
