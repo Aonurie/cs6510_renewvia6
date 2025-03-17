@@ -12,20 +12,20 @@ export default function ProjectPage() {
   return (
     <div style={{ padding: "2rem" }}>
       <p style={{ marginBottom: "1rem", fontSize: "1rem", color: "#333" }}>
-        This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.<br /><br />
+        *This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.
 
-        <strong>Test data:</strong> An Excel file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns:
+        Test data: An Excel file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns:
         <ul>
-          <li><strong>name</strong> (indicating &apos;Building&apos; or &apos;Power Source&apos;)</li>
-          <li><strong>latitude</strong></li>
-          <li><strong>longitude</strong></li>
+          <li> - name (indicating &apos;Building&apos; or &apos;Power Source&apos;)</li>
+          <li> - latitude</li>
+          <li> - longitude</li>
         </ul>
 
-        <strong>Cost hyperparameters:</strong> Pole cost, MV Cable cost, LV Cable cost (all in USD).<br /><br />
+        Cost hyperparameters: Pole cost, MV Cable cost, LV Cable cost (all in USD).
 
-        <strong>Output:</strong> A visual of an optimal grid design based on given data.
+        Output: A visual of an optimal grid design based on given data.
       </p>
-      <h1 style={{ marginBottom: "1rem" }}>Upload Test GPS Coordinate Data and Enter Test Costs</h1>
+      <h1 style={{ marginBottom: "1rem" }}><strong>Upload Test GPS Coordinate Data and Enter Cost Hyperparameters</strong></h1>
       <Input />
     </div>
   );

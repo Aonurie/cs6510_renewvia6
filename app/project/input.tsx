@@ -16,10 +16,10 @@ const Input: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Excel File:", excelFile);
-    console.log("Poles Cost:", polesCost);
-    console.log("MV Cables Cost:", mvCablesCost);
-    console.log("LV Cables Cost:", lvCablesCost);
+    console.log("Excel File: ", excelFile);
+    console.log("Pole Cost:", polesCost);
+    console.log("MV Cable Cost:", mvCablesCost);
+    console.log("LV Cable Cost:", lvCablesCost);
   };
 
   return (
