@@ -13,10 +13,10 @@ export default function ProjectPage() {
     <div style={{ padding: "2rem" }}>
       <p style={{ marginBottom: "1rem", fontSize: "1rem", color: "#333" }}>
         This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.<br /><br />
-        
+
         <strong>Test data:</strong> An Excel file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns:
         <ul>
-          <li><strong>name</strong> (indicating 'Building' or 'Power Source')</li>
+          <li><strong>name</strong> (indicating &apos;Building&apos; or &apos;Power Source&apos;)</li>
           <li><strong>latitude</strong></li>
           <li><strong>longitude</strong></li>
         </ul>
