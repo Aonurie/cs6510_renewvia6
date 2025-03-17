@@ -10,12 +10,15 @@ Parameterization Approach
 
 To determine candidate pole placements, we can use the Minimum Disk Covering (MDC) Problem or a k-means clustering approach to identify locations based on household and infrastructure density. The power grid will be modeled as a Directed Acyclic Graph (DAG), where nodes represent power sources, poles, buildings, and transformers, while edges correspond to low-voltage (LV), medium-voltage (MV), and drop cables. Key hyperparameters include cable lengths, installation costs, and voltage drop constraints.
 For learning representations of this graph, Graph Neural Networks (GNNs) will be leveraged. A Graph Attention Network (GAT) can assign different weights to various cable types (LV and MV), making it well-suited for handling diverse infrastructure constraints. Alternatively, a Graph Convolutional Network (GCN) may offer a more computationally efficient approach, though its uniform weight-sharing mechanism could make it less effective in distinguishing between different cable types. The choice between GAT and GCN will depend on the trade-off between accuracy and computational efficiency in modeling the power grid. Additionally, it will be ensured that the learned graph stays acyclic so that electricity flows properly and we don’t end up with unintended loops in the network.
-<Image
-  src="/p6_viz.png"
-  alt="Alt text"
-  width={650} 
-  height={400}
-/>
+<div style={{ position: "relative", width: "650px", height: "400px" }}>
+  <Image 
+    src="/p6_viz.png" 
+    alt="Alt text" 
+    layout="fill" 
+    objectFit="contain" 
+  />
+</div>
+
 
 Optimization Approach
 
