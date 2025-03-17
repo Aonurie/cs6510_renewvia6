@@ -3,7 +3,7 @@ title: Project Goals & Updates
 date: "2025-02-14"
 order: 3
 ---
-
+## Goals
 The goal of our team is to come up with a viable solution to the graph theory problem proposed by Nicholas Selby at Renewvia. More specifically, we hope to create a model for automating electricity grid pole and cable distribution such that the results include an optimal, cost-saving design for a given community. Further, we plan to start the project by focusing on its parameterization aspects as recommended by Nicholas. We will shift focus to optimization only when we feel like we’ve first been able to propose a worthwhile solution to finding all the possible grid designs given the basic constraints.
 
 Parameterization Approach
@@ -11,7 +11,7 @@ Parameterization Approach
 To determine candidate pole placements, we can use the Minimum Disk Covering (MDC) Problem or a k-means clustering approach to identify locations based on household and infrastructure density. The power grid will be modeled as a Directed Acyclic Graph (DAG), where nodes represent power sources, poles, buildings, and transformers, while edges correspond to low-voltage (LV), medium-voltage (MV), and drop cables. Key hyperparameters include cable lengths, installation costs, and voltage drop constraints.
 For learning representations of this graph, Graph Neural Networks (GNNs) will be leveraged. A Graph Attention Network (GAT) can assign different weights to various cable types (LV and MV), making it well-suited for handling diverse infrastructure constraints. Alternatively, a Graph Convolutional Network (GCN) may offer a more computationally efficient approach, though its uniform weight-sharing mechanism could make it less effective in distinguishing between different cable types. The choice between GAT and GCN will depend on the trade-off between accuracy and computational efficiency in modeling the power grid. Additionally, it will be ensured that the learned graph stays acyclic so that electricity flows properly and we don’t end up with unintended loops in the network.
 <Image
-  src="/p6_viz.jpg"
+  src="/p6_viz.png"
   alt="Alt text"
   width={500} 
   height={300}
@@ -21,3 +21,16 @@ Optimization Approach
 
 We are working on solidifying an approach for optimization over this week and next but we are thinking of possibly using Proximal Policy Optimization (PPO) with reward shaping. PPO is supposed to be good for a non-convex problem space such as ours. PPO is a reinforcement learning algorithm and the bulk of the work for us would be figuring out how to define our reward system (balancing all cost considerations like pole cost, cable cost, voltage drop constraints, etc.)
 
+## Updates
+3/10-3/16
+
+Added 'Project' tab where users will go to upload test data to create an optimal energy grid design
+Worked on 'Project' backend - troubleshooting triggering .py file from 'Submit' button
+Updated home page and 'Project Goals & Updates' section
+
+
+3/17-3/23 
+
+Updated 'Project Goals & Updates' section of website
+Updated 'Project' tab to have more description for users
+Working on finishing up backend connections as well as parameterization goals detailed in above goals
