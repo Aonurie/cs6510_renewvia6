@@ -7,6 +7,11 @@ const Input: React.FC = () => {
   const [polesCost, setPolesCost] = useState("");
   const [mvCablesCost, setMvCablesCost] = useState("");
   const [lvCablesCost, setLvCablesCost] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [plotUrl, setPlotUrl] = useState(""); // Store the returned plot URL
+
+  // Update this URL with your actual backend URL
+  //const BACKEND_URL = "https://cs6510-renewvia6-kk01.onrender.com";
 
   const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -14,12 +19,42 @@ const Input: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Excel File: ", excelFile);
-    console.log("Pole Cost:", polesCost);
-    console.log("MV Cable Cost:", mvCablesCost);
-    console.log("LV Cable Cost:", lvCablesCost);
+    setLoading(true);
+    setPlotUrl(""); // Reset previous plot
+
+    if (!excelFile) {
+      alert("Please upload an Excel file.");
+      setLoading(false);
+      return;
+    }
+
+    // Create a FormData object to send file + inputs
+    const formData = new FormData();
+    formData.append("excelFile", excelFile);
+    formData.append("polesCost", polesCost);
+    formData.append("mvCablesCost", mvCablesCost);
+    formData.append("lvCablesCost", lvCablesCost);
+
+    try {
+      const response = await fetch("/api/run-script", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to process data.");
+      }
+
+      const result = await response.json();
+      setPlotUrl(result.plot_url); // Expecting backend to return the plot URL
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error processing the request.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +75,16 @@ const Input: React.FC = () => {
         <label htmlFor="lvCablesCost">LV Cables Cost:</label>
         <input type="text" id="lvCablesCost" value={lvCablesCost} onChange={(e) => setLvCablesCost(e.target.value)} />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Processing..." : "Submit"}
+      </button>
+
+      {plotUrl && (
+        <div style={{ marginTop: "1rem" }}>
+          <h3>Generated Plot:</h3>
+          <img src={plotUrl} alt="Generated Plot" style={{ width: "100%", maxWidth: "500px" }} />
+        </div>
+      )}
     </form>
   );
 };
