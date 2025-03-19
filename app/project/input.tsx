@@ -12,8 +12,7 @@ const Input: React.FC = () => {
   const [totalCost, setTotalCost] = useState<number | null>(null); // Store the total cost
   const [error, setError] = useState<string | null>(null);
 
-  // Update this URL with your actual backend URL
-  //const BACKEND_URL = "https://cs6510-renewvia6-kk01.onrender.com";
+  const BACKEND_URL = "https://cs6510-renewvia6-kk01.onrender.com";
 
   const handleCsvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -48,7 +47,7 @@ const Input: React.FC = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
 
-      const response = await fetch("/api/run-script", {
+      const response = await fetch(`${BACKEND_URL}/process`, {
         method: "POST",
         body: formData,
         signal: controller.signal,
@@ -64,7 +63,7 @@ const Input: React.FC = () => {
       const result = await response.json();
       // Add timestamp to prevent caching
       const timestamp = new Date().getTime();
-      const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}?t=${timestamp}`;
+      const fullPlotUrl = `${BACKEND_URL}${result.plot_url}?t=${timestamp}`;
       setPlotUrl(fullPlotUrl);
       setTotalCost(result.total_cost);
     } catch (error) {
@@ -84,51 +83,117 @@ const Input: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div style={{ marginBottom: "1rem" }}>
-        <label htmlFor="csvFile">CSV File:</label>
+    <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto" }}>
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label htmlFor="csvFile" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+          CSV File:
+        </label>
         <input 
           type="file" 
           id="csvFile" 
           accept=".csv"
           onChange={handleCsvFileChange}
+          style={{ width: "100%", padding: "0.5rem", border: "1px solid #ccc", borderRadius: "4px" }}
         />
       </div>
-      <div style={{ marginBottom: "1rem" }}>
-        <label htmlFor="polesCost">Poles Cost:</label>
-        <input type="text" id="polesCost" value={polesCost} onChange={(e) => setPolesCost(e.target.value)} />
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label htmlFor="polesCost" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+          Poles Cost:
+        </label>
+        <input 
+          type="text" 
+          id="polesCost" 
+          value={polesCost} 
+          onChange={(e) => setPolesCost(e.target.value)}
+          style={{ 
+            width: "100%", 
+            padding: "0.5rem", 
+            border: "1px solid #e0e0e0", 
+            borderRadius: "4px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            fontSize: "1rem",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+          }}
+        />
       </div>
-      <div style={{ marginBottom: "1rem" }}>
-        <label htmlFor="mvCablesCost">MV Cables Cost:</label>
-        <input type="text" id="mvCablesCost" value={mvCablesCost} onChange={(e) => setMvCablesCost(e.target.value)} />
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label htmlFor="mvCablesCost" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+          MV Cables Cost:
+        </label>
+        <input 
+          type="text" 
+          id="mvCablesCost" 
+          value={mvCablesCost} 
+          onChange={(e) => setMvCablesCost(e.target.value)}
+          style={{ 
+            width: "100%", 
+            padding: "0.5rem", 
+            border: "1px solid #e0e0e0", 
+            borderRadius: "4px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            fontSize: "1rem",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+          }}
+        />
       </div>
-      <div style={{ marginBottom: "1rem" }}>
-        <label htmlFor="lvCablesCost">LV Cables Cost:</label>
-        <input type="text" id="lvCablesCost" value={lvCablesCost} onChange={(e) => setLvCablesCost(e.target.value)} />
+      <div style={{ marginBottom: "1.5rem" }}>
+        <label htmlFor="lvCablesCost" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+          LV Cables Cost:
+        </label>
+        <input 
+          type="text" 
+          id="lvCablesCost" 
+          value={lvCablesCost} 
+          onChange={(e) => setLvCablesCost(e.target.value)}
+          style={{ 
+            width: "100%", 
+            padding: "0.5rem", 
+            border: "1px solid #e0e0e0", 
+            borderRadius: "4px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            fontSize: "1rem",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+          }}
+        />
       </div>
-      <button type="submit" disabled={loading}>
+      <button 
+        type="submit" 
+        disabled={loading}
+        style={{
+          padding: "0.75rem 1.5rem",
+          backgroundColor: loading ? "#ccc" : "#0070f3",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: loading ? "not-allowed" : "pointer",
+          fontSize: "1rem"
+        }}
+      >
         {loading ? "Processing..." : "Submit"}
       </button>
 
       {error && (
-        <div style={{ marginTop: "1rem", color: "red" }}>
+        <div style={{ marginTop: "1rem", color: "red", padding: "0.75rem", backgroundColor: "#fee", borderRadius: "4px" }}>
           {error}
         </div>
       )}
 
       {plotUrl && (
-        <div style={{ marginTop: "1rem" }}>
-          <h3>Generated Plot:</h3>
+        <div style={{ marginTop: "2rem" }}>
+          <h3 style={{ marginBottom: "1rem" }}>Generated Plot:</h3>
           <img 
             src={plotUrl} 
             alt="Generated Plot" 
-            style={{ width: "100%", maxWidth: "500px" }}
-            key={plotUrl} // Add key to force re-render
+            style={{ width: "100%", maxWidth: "500px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+            key={plotUrl}
           />
           {totalCost !== null && (
-            <div style={{ marginTop: "1rem" }}>
-              <h3>Total Cost:</h3>
-              <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+            <div style={{ marginTop: "1.5rem" }}>
+              <h3 style={{ marginBottom: "0.5rem" }}>Total Cost:</h3>
+              <p style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#0070f3" }}>
                 ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
             </div>

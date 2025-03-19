@@ -53,6 +53,14 @@ export default function Home() {
 
   return (
     <div className="prose dark:prose-invert">
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh',
+        marginTop: "1rem"  // Add margin to the top
+      }}>
       {/* Availability Link */}
       <div className="mb-8">
         <a 
@@ -90,6 +98,7 @@ export default function Home() {
           </article>
         ))}
       </section>
+      </div>
     </div>
   )
 }

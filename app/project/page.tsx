@@ -11,7 +11,7 @@ export async function generateMetadata() {
 export default function ProjectPage() {
   return (
     <div style={{ padding: "2rem" }}>
-      <p style={{ marginBottom: "1rem", fontSize: "0.875rem", color: "#333" }}>
+      <p style={{ marginBottom: "1rem", fontSize: "0.775rem", color: "#333" }}>
         *This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.<br /><br />
         Test data: A CSV file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns:
         <ul>
@@ -19,8 +19,8 @@ export default function ProjectPage() {
           <li> - latitude</li>
           <li> - longitude</li>
         </ul>
-        Cost hyperparameters: Pole cost, MV Cable cost, LV Cable cost (all in USD).<br />
-        Output: A visual of an optimal grid design based on given data.
+        Cost hyperparameters: Pole cost, MV Cable cost, LV Cable cost.<br />
+        Output: A visual of an optimal grid design based on given data as well as its total cost.
       </p>
       
       {/* Download Links Description */}
@@ -28,7 +28,7 @@ export default function ProjectPage() {
         Below you can download two test data files for use:
       </div>
       {/* Two Download Links Section */}
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "1rem", fontSize: "0.875rem" }}>
         <a href="/files/BuildingCoordinate1.csv" download="BuildingCoordinate1.csv" style={{ marginRight: "1rem", color: "blue" }}>
           Download Test Data 1 CSV 
         </a>
