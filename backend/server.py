@@ -49,7 +49,7 @@ def process_data():
         plt.title("Cost Breakdown")
         
         plot_path = os.path.join(PLOT_FOLDER, "output_plot.png")
-        plt.savefig(plot_path, bbox_inches='tight', pad_inches=0.1, optimize=True)
+        plt.savefig(plot_path, bbox_inches='tight', pad_inches=0.1)
         plt.close()
 
         return jsonify({
