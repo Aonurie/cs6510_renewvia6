@@ -207,6 +207,28 @@ def connect_buildings_to_poles(buildings, poles, G):
     nx.set_node_attributes(G, pos, 'pos')
     return G
 
+# cost calc function
+def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G, buildings, power_source):
+    pole_count = 0
+    lv_cab_count = 0
+    mv_cab_count = 0
+
+    non_pole = tuple(map(tuple,np.vstack([buildings, power_source])))
+
+    for ind, pos in G.nodes(data=True):
+        if pos['pos'] not in non_pole:
+            pole_count += 1
+    for edge in G.edges:
+        dist = G.get_edge_data(*edge)["weight"]
+        if dist <= 30:
+            lv_cab_count +=1
+        else:
+            mv_cab_count +=1
+
+    total_cost = pole_cost * pole_count + lv_cable_cost * lv_cab_count + mv_cable_cost * mv_cab_count
+
+    return total_cost
+    
 # visualize the graph
 def visualize(buildings, poles, G, power_source):
     plt.figure(figsize=(10, 10))
@@ -228,7 +250,7 @@ def visualize(buildings, poles, G, power_source):
     plt.show()
 
 
-def main2(excel_path):
+def main2(excel_path, pole_cost = 0, lv_cable_cost = 0, mv_cable_cost):
     # Read in user-given coordinate data
     df = load_data(excel_path)
     buildings = df[df['Name'] != 'Power Source'][['Latitude', 'Longitude']].values
@@ -251,6 +273,9 @@ def main2(excel_path):
     
     # Add in drop-cables aka connect buildings to nearest poles
     G = connect_buildings_to_poles(buildings, final_poles, G)
+
+    # Calculating the total cost
+    Cost = ccost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G, buildings, power_source)
     
     # prints out edges and their weights aka distances - use this to help calc cost
     for u, v, data in G.edges(data=True):
@@ -276,7 +301,6 @@ def main():
 
     print(json.dumps({"message": "Script executed successfully", "data": data}))
 
-
 if __name__ == "__main__":
     main()
 
@@ -299,24 +323,4 @@ if __name__ == "__main__":
     # LV cable cost
     # MV cable cost
 
-# cost calc function
-def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G, buildings, power_source):
-    pole_count = 0
-    lv_cab_count = 0
-    mv_cab_count = 0
 
-    non_pole = tuple(map(tuple,np.vstack([buildings, power_source])))
-
-    for ind, pos in G.nodes(data=True):
-        if pos['pos'] not in non_pole:
-            pole_count += 1
-    for edge in G.edges:
-        dist = G.get_edge_data(*edge)["weight"]
-        if dist <= 30:
-            lv_cab_count +=1
-        else:
-            mv_cab_count +=1
-
-    total_cost = pole_cost * pole_count + lv_cable_cost * lv_cab_count + mv_cable_cost * mv_cab_count
-
-    return total_cost
