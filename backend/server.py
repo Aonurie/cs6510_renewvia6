@@ -1,28 +1,41 @@
 from flask import Flask, request, jsonify
-import subprocess
 import os
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
-@app.route("/run-script", methods=["POST"])
-def run_script():
-    data = request.json  # Get user inputs from Vercel frontend
-    poles_cost = data.get("polesCost")
-    mv_cables_cost = data.get("mvCablesCost")
-    lv_cables_cost = data.get("lvCablesCost")
+UPLOAD_FOLDER = "uploads"
+PLOT_FOLDER = "static/plots"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PLOT_FOLDER, exist_ok=True)
 
-    script_path = os.path.join(os.getcwd(), "UI_graph_alg.py")
+@app.route("/process", methods=["POST"])
+def process_data():
+    if "excelFile" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
 
-    # Run the script and capture output
-    result = subprocess.run(
-        ["python3", script_path, str(poles_cost), str(mv_cables_cost), str(lv_cables_cost)],
-        capture_output=True, text=True
-    )
+    file = request.files["excelFile"]
+    poles_cost = request.form.get("polesCost")
+    mv_cost = request.form.get("mvCablesCost")
+    lv_cost = request.form.get("lvCablesCost")
 
-    if result.returncode == 0:
-        return jsonify({"message": "Success", "output": result.stdout})
-    else:
-        return jsonify({"error": result.stderr}), 500
+    # Save the file temporarily
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    # Generate a sample plot
+    plot_path = os.path.join(PLOT_FOLDER, "output_plot.png")
+    plt.figure(figsize=(6, 4))
+    plt.bar(["Poles", "MV Cables", "LV Cables"], [float(poles_cost), float(mv_cost), float(lv_cost)])
+    plt.xlabel("Cost Types")
+    plt.ylabel("Cost ($)")
+    plt.title("Cost Breakdown")
+    plt.savefig(plot_path)
+    plt.close()
+
+    # Return the plot URL
+    return jsonify({"plot_url": f"/static/plots/output_plot.png"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
