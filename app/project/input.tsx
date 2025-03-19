@@ -22,20 +22,19 @@ const Input: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setPlotUrl(""); // Reset previous plot
+    setPlotUrl("");
 
-    if (!csvFile) {  // Changed from excelFile
+    if (!csvFile) {
       alert("Please upload a CSV file.");
       setLoading(false);
       return;
     }
 
-    // Create a FormData object to send file + inputs
     const formData = new FormData();
-    formData.append("csvFile", csvFile); 
-    formData.append("polesCost", polesCost);
-    formData.append("mvCablesCost", mvCablesCost);
-    formData.append("lvCablesCost", lvCablesCost);
+    formData.append("csvFile", csvFile);
+    formData.append("polesCost", polesCost || "0");
+    formData.append("mvCablesCost", mvCablesCost || "0");
+    formData.append("lvCablesCost", lvCablesCost || "0");
 
     try {
       const response = await fetch("/api/run-script", {
@@ -44,14 +43,16 @@ const Input: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to process data.");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`Failed to process data: ${errorData.error || response.statusText}`);
       }
 
       const result = await response.json();
-      setPlotUrl(result.plot_url); // Expecting backend to return the plot URL
+      const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}`;
+      setPlotUrl(fullPlotUrl);
     } catch (error) {
       console.error("Error:", error);
-      alert("Error processing the request.");
+      alert(error instanceof Error ? error.message : "Error processing the request.");
     } finally {
       setLoading(false);
     }

@@ -6,8 +6,8 @@ export async function POST(request: Request) {
     
     // Log what we're sending
     console.log('Sending request to backend with file size:', 
-      formData.get('excelFile') instanceof File ? 
-      (formData.get('excelFile') as File).size : 'No file');
+      formData.get('csvFile') instanceof File ? 
+      (formData.get('csvFile') as File).size : 'No file');
 
     const response = await fetch("https://cs6510-renewvia6-kk01.onrender.com/process", {
       method: "POST",
