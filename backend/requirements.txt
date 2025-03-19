@@ -6,3 +6,4 @@ scipy
 networkx
 Flask
 gunicorn
+openpyxl

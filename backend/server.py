@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import matplotlib.pyplot as plt
+from UI_graph_alg import main2  # Add this import
 
 app = Flask(__name__, static_folder='static')  # Add static_folder configuration
 
@@ -40,21 +41,36 @@ def process_data():
             print(f"Error converting costs to float: {e}")  # Debug log
             return jsonify({"error": "Invalid cost values"}), 400
 
-        # Generate a sample plot
-        plt.figure(figsize=(6, 4), dpi=80)
-        plt.bar(["Poles", "MV Cables", "LV Cables"], costs,
-                color=['blue', 'green', 'red'])
-        plt.xlabel("Cost Types")
-        plt.ylabel("Cost ($)")
-        plt.title("Cost Breakdown")
-        
-        plot_path = os.path.join(PLOT_FOLDER, "output_plot.png")
-        plt.savefig(plot_path, bbox_inches='tight', pad_inches=0.1)
-        plt.close()
+        # Save the uploaded file temporarily
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(file_path)
 
-        return jsonify({
-            "plot_url": "/static/plots/output_plot.png"
-        })
+        try:
+            # Call the algorithm with the file path and costs
+            final_poles, G, plot_buffer = main2(
+                file_path,
+                float(poles_cost),
+                float(mv_cost),
+                float(lv_cost)
+            )
+
+            # Save the plot from the buffer
+            plot_path = os.path.join(PLOT_FOLDER, "output_plot.png")
+            with open(plot_path, 'wb') as f:
+                f.write(plot_buffer.getvalue())
+
+            # Clean up the temporary file
+            os.remove(file_path)
+
+            return jsonify({
+                "plot_url": "/static/plots/output_plot.png"
+            })
+
+        except Exception as e:
+            print(f"Error in algorithm: {str(e)}")
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            return jsonify({"error": f"Algorithm error: {str(e)}"}), 500
 
     except Exception as e:
         print(f"Error in process_data: {str(e)}")  # Debug log

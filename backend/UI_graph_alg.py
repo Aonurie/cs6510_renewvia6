@@ -53,8 +53,9 @@ class UnionFind:
             return True
         return False
 
-def load_data(excel_path):
-    df = pd.read_excel(excel_path)
+def load_data(file_path):
+    # Change to handle CSV instead of Excel
+    df = pd.read_csv(file_path)
     return df
 
 def determine_num_poles(num_buildings):
@@ -241,6 +242,11 @@ def visualize(buildings, poles, G, power_source):
 def main2(file_path, poles_cost, mv_cost, lv_cost):
     # Read in user-given coordinate data
     df = load_data(file_path)
+    
+    # Check if Power Source exists
+    if not any(df['Name'] == 'Power Source'):
+        raise ValueError("CSV file must contain a row with 'Power Source' in the Name column")
+    
     buildings = df[df['Name'] != 'Power Source'][['Latitude', 'Longitude']].values
     power_source = df[df['Name'] == 'Power Source'][['Latitude', 'Longitude']].values[0]
     
