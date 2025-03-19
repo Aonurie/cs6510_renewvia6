@@ -34,7 +34,9 @@ def process_data():
     plt.close()
 
     # Return the plot URL
-    return jsonify({"plot_url": f"/static/plots/output_plot.png"})
+    return jsonify({
+        "plot_url": "https://cs6510-renewvia6-kk01.onrender.com/static/plots/output_plot.png"
+    })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
