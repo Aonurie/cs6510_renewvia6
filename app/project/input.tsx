@@ -47,6 +47,14 @@ const Input: React.FC = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
 
+      console.log('Sending request to:', `${BACKEND_URL}/process`);
+      console.log('With form data:', {
+        csvFile: csvFile.name,
+        polesCost,
+        mvCablesCost,
+        lvCablesCost
+      });
+
       const response = await fetch(`${BACKEND_URL}/process`, {
         method: "POST",
         body: formData,
@@ -57,10 +65,12 @@ const Input: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error('Server response not OK:', response.status, errorData);
         throw new Error(`Failed to process data: ${errorData.error || response.statusText}`);
       }
 
       const result = await response.json();
+      console.log('Server response:', result);
       const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}`;
       setPlotUrl(fullPlotUrl);
       setTotalCost(result.total_cost);
@@ -69,6 +79,8 @@ const Input: React.FC = () => {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
           setError("Request timed out. The server is warming up. Please try again in a few moments.");
+        } else if (error.message.includes('Failed to fetch')) {
+          setError("Unable to connect to the server. Please check your internet connection and try again.");
         } else {
           setError(error.message);
         }

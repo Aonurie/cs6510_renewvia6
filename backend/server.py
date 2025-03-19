@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS  # Add this import
 import os
 import matplotlib.pyplot as plt
 from UI_graph_alg import main  # Add this import
@@ -6,6 +7,13 @@ import time
 import uuid
 
 app = Flask(__name__, static_folder='static')  # Add static_folder configuration
+CORS(app, resources={
+    r"/*": {
+        "origins": ["*"],  # Allow all origins
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 UPLOAD_FOLDER = "uploads"
 PLOT_FOLDER = "static/plots"
