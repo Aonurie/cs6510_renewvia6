@@ -7,3 +7,4 @@ networkx
 Flask
 gunicorn
 openpyxl
+flask-cors
