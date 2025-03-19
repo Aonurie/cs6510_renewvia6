@@ -22,6 +22,20 @@ export default function ProjectPage() {
         Cost hyperparameters: Pole cost, MV Cable cost, LV Cable cost (all in USD).<br />
         Output: A visual of an optimal grid design based on given data.
       </p>
+      
+      {/* Download Links Description */}
+      <div style={{ marginBottom: "1rem", fontSize: "0.875rem", color: "#333" }}>
+        Below you can download two test data files for use:
+      </div>
+      {/* Two Download Links Section */}
+      <div style={{ marginBottom: "1rem" }}>
+        <a href="/public/files/BuildingCoordinate1.csv" download="BuildingCoordinate1.csv" style={{ marginRight: "1rem" }}>
+          Download Test Data 1 CSV 
+        </a>
+        <a href="/public/files/BuildingCoordinate(2).csv" download="BuildingCoordinate(2).csv">
+          Download Test Data 2 CSV
+        </a>
+      </div>
       <h1 style={{ marginBottom: "1rem" }}><strong>Upload Test GPS Coordinate Data and Enter Cost Hyperparameters</strong></h1>
       <Input />
     </div>
