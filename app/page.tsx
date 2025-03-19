@@ -1,9 +1,36 @@
+"use client";
+
 import { allPosts } from "@/.contentlayer/generated"
 import Link from "next/link"
+import { useState } from "react"
 
 export default function Home() {
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 3000); // Hide message after 3 seconds
+  };
+
   return (
     <div className="prose dark:prose-invert">
+      {/* Availability Link */}
+      <div className="mb-8">
+        <a 
+          href="#" 
+          onClick={handleClick}
+          className="text-blue-600 hover:text-blue-800 underline"
+        >
+          Peer Review Survey
+        </a>
+        {showMessage && (
+          <div className="mt-2 p-4 bg-blue-100 text-blue-700 rounded-md">
+            Available in 2 hours
+          </div>
+        )}
+      </div>
+
       {/* Static Content */}
       <section>
         <h1 className="mt-4">P6 Renewvia-Design</h1>

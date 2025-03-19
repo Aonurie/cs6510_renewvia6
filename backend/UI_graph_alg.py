@@ -210,6 +210,28 @@ def connect_buildings_to_poles(buildings, poles, G):
     nx.set_node_attributes(G, pos, 'pos')
     return G
 
+# cost calc function
+def cost_calc(pole_cost, lv_cable_cost, mv_cable_cost, G, buildings, power_source):
+    pole_count = 0
+    lv_cab_count = 0
+    mv_cab_count = 0
+
+    non_pole = tuple(map(tuple,np.vstack([buildings, power_source])))
+
+    for ind, pos in G.nodes(data=True):
+        if pos['pos'] not in non_pole:
+            pole_count += 1
+    for edge in G.edges:
+        dist = G.get_edge_data(*edge)["weight"]
+        if dist <= 30:
+            lv_cab_count +=1
+        else:
+            mv_cab_count +=1
+
+    total_cost = pole_cost * pole_count + lv_cable_cost * lv_cab_count + mv_cable_cost * mv_cab_count
+
+    return total_cost
+
 # visualize the graph
 def visualize(buildings, poles, G, power_source):
     plt.figure(figsize=(10, 10))
@@ -239,7 +261,7 @@ def visualize(buildings, poles, G, power_source):
     return buf
 
 
-def main2(file_path, poles_cost, mv_cost, lv_cost):
+def main(file_path, poles_cost, mv_cost, lv_cost):
     # Read in user-given coordinate data
     df = load_data(file_path)
     
@@ -268,29 +290,9 @@ def main2(file_path, poles_cost, mv_cost, lv_cost):
     # Add in drop-cables aka connect buildings to nearest poles
     G = connect_buildings_to_poles(buildings, final_poles, G)
     
-    # prints out edges and their weights aka distances - use this to help calc cost
-    for u, v, data in G.edges(data=True):
-        print(f"Edge ({u} - {v}) | Weight: {data['weight']:.2f} meters")
+    # Calculating the total cost
+    total_cost = cost_calc(poles_cost, lv_cost, mv_cost, G, buildings, power_source)
     
     buf = visualize(buildings, final_poles, G, power_source)
     
-    return final_poles, G, buf
-
-
-#### TO-DO ####
-# Connect to UI so excel is given by user & resulting graph is shown on website
-# Could add in 'pruning' feature to get rid of isolated poles
-    # (poles not connecting to buildings or needed to connect to power source)
-# Could check distances between poles and add in intermediate nodes when distance
-    # is over 50 meters
-# Add in cost analysis (so just take in user-given hyperparamters of what cables,
-    # poles, etc. costs and then determine from final graph what the cost will be)
-# Final output to user should be a visualization the grid design + total cost of
-    # it given their inputted excel with gps coordinates and cost hyperparameters
-    
-### INPUTS FROM USER ###
-# excel with coordinates - specify format to user (what cols are needed)
-# 3 cost hyperparameters
-    # pole cost
-    # LV cable cost
-    # MV cable cost
+    return final_poles, G, buf, total_cost

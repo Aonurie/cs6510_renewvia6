@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import matplotlib.pyplot as plt
-from UI_graph_alg import main2  # Add this import
+from UI_graph_alg import main  # Add this import
 
 app = Flask(__name__, static_folder='static')  # Add static_folder configuration
 
@@ -47,7 +47,7 @@ def process_data():
 
         try:
             # Call the algorithm with the file path and costs
-            final_poles, G, plot_buffer = main2(
+            final_poles, G, plot_buffer, total_cost = main(
                 file_path,
                 float(poles_cost),
                 float(mv_cost),
@@ -63,7 +63,8 @@ def process_data():
             os.remove(file_path)
 
             return jsonify({
-                "plot_url": "/static/plots/output_plot.png"
+                "plot_url": "/static/plots/output_plot.png",
+                "total_cost": total_cost
             })
 
         except Exception as e:
@@ -73,7 +74,7 @@ def process_data():
             return jsonify({"error": f"Algorithm error: {str(e)}"}), 500
 
     except Exception as e:
-        print(f"Error in process_data: {str(e)}")  # Debug log
+        print(f"Error in process_data: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":

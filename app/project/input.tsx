@@ -9,6 +9,7 @@ const Input: React.FC = () => {
   const [lvCablesCost, setLvCablesCost] = useState("");
   const [loading, setLoading] = useState(false);
   const [plotUrl, setPlotUrl] = useState(""); // Store the returned plot URL
+  const [totalCost, setTotalCost] = useState<number | null>(null); // Store the total cost
 
   // Update this URL with your actual backend URL
   //const BACKEND_URL = "https://cs6510-renewvia6-kk01.onrender.com";
@@ -23,6 +24,7 @@ const Input: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setPlotUrl("");
+    setTotalCost(null);
 
     if (!csvFile) {
       alert("Please upload a CSV file.");
@@ -50,6 +52,7 @@ const Input: React.FC = () => {
       const result = await response.json();
       const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}`;
       setPlotUrl(fullPlotUrl);
+      setTotalCost(result.total_cost);
     } catch (error) {
       console.error("Error:", error);
       alert(error instanceof Error ? error.message : "Error processing the request.");
@@ -89,6 +92,14 @@ const Input: React.FC = () => {
         <div style={{ marginTop: "1rem" }}>
           <h3>Generated Plot:</h3>
           <img src={plotUrl} alt="Generated Plot" style={{ width: "100%", maxWidth: "500px" }} />
+          {totalCost !== null && (
+            <div style={{ marginTop: "1rem" }}>
+              <h3>Total Cost:</h3>
+              <p style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+          )}
         </div>
       )}
     </form>
