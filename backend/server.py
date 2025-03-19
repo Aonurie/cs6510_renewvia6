@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 import os
 import matplotlib.pyplot as plt
-from UI_graph_alg import main2  # Add this import
+from UI_graph_alg import main  # Add this import
 import time
 import uuid
 
@@ -57,7 +57,7 @@ def process_data():
             print(f"Starting algorithm at {start_time}")
 
             # Call the algorithm with the file path and costs
-            final_poles, G, plot_buffer, total_cost = main2(
+            final_poles, G, plot_buffer, total_cost = main(
                 file_path,
                 float(poles_cost),
                 float(mv_cost),

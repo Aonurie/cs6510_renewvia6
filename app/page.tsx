@@ -10,21 +10,21 @@ export default function Home() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      // Get current date in EST
+      // Get current date in PST
       const now = new Date();
-      const estOffset = -4; // EDT offset
-      const currentEST = new Date(now.getTime() + (estOffset * 60 * 60 * 1000));
+      const pstOffset = -7; // PST offset
+      const currentPST = new Date(now.getTime() + (pstOffset * 60 * 60 * 1000));
       
-      // Set target to 11:59 PM EST today
-      const target = new Date(currentEST);
-      target.setHours(23, 59, 0, 0);
+      // Set target to 11:59 PM EST (which is 8:59 PM PST)
+      const target = new Date(currentPST);
+      target.setHours(20, 59, 0, 0); // 8:59 PM PST = 11:59 PM EST
       
-      // If current time is past 11:59 PM, set target to next day
-      if (currentEST > target) {
+      // If current time is past 8:59 PM PST, set target to next day
+      if (currentPST > target) {
         target.setDate(target.getDate() + 1);
       }
 
-      const difference = target.getTime() - currentEST.getTime();
+      const difference = target.getTime() - currentPST.getTime();
       
       if (difference > 0) {
         const hours = Math.floor(difference / (1000 * 60 * 60));
@@ -50,7 +50,7 @@ export default function Home() {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 5000);
+    setTimeout(() => setShowMessage(false), 10000);
   };
 
   return (
