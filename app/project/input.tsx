@@ -61,9 +61,7 @@ const Input: React.FC = () => {
       }
 
       const result = await response.json();
-      // Add timestamp to prevent caching
-      const timestamp = new Date().getTime();
-      const fullPlotUrl = `${BACKEND_URL}${result.plot_url}?t=${timestamp}`;
+      const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}`;
       setPlotUrl(fullPlotUrl);
       setTotalCost(result.total_cost);
     } catch (error) {
@@ -188,7 +186,6 @@ const Input: React.FC = () => {
             src={plotUrl} 
             alt="Generated Plot" 
             style={{ width: "100%", maxWidth: "500px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
-            key={plotUrl}
           />
           {totalCost !== null && (
             <div style={{ marginTop: "1.5rem" }}>

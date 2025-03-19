@@ -13,12 +13,8 @@ export default function ProjectPage() {
     <div style={{ padding: "2rem" }}>
       <p style={{ marginBottom: "1rem", fontSize: "0.775rem", color: "#333" }}>
         *This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.<br /><br />
-        Test data: A CSV file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns:
-        <ul>
-          <li> - name (indicating &apos;Building&apos; or &apos;Power Source&apos;)</li>
-          <li> - latitude</li>
-          <li> - longitude</li>
-        </ul>
+        Test data: A CSV file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns: 
+        name (Building or Power Source), latitude, longitude.<br />
         Cost hyperparameters: Pole cost, MV Cable cost, LV Cable cost.<br />
         Output: A visual of an optimal grid design based on given data as well as its total cost.
       </p>
