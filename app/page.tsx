@@ -10,21 +10,19 @@ export default function Home() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      // Get current date in PST
+      // Get current date in UTC
       const now = new Date();
-      const pstOffset = -7; // PST offset
-      const currentPST = new Date(now.getTime() + (pstOffset * 60 * 60 * 1000));
       
-      // Set target to 11:59 PM EST (which is 8:59 PM PST)
-      const target = new Date(currentPST);
-      target.setHours(20, 59, 0, 0); // 8:59 PM PST = 11:59 PM EST
+      // Set target to 11:59 PM EST (which is 4:59 AM UTC next day)
+      const target = new Date(now);
+      target.setUTCHours(4, 59, 0, 0); // 4:59 AM UTC = 11:59 PM EST
       
-      // If current time is past 8:59 PM PST, set target to next day
-      if (currentPST > target) {
-        target.setDate(target.getDate() + 1);
+      // If current time is past 4:59 AM UTC, set target to next day
+      if (now > target) {
+        target.setUTCDate(target.getUTCDate() + 1);
       }
 
-      const difference = target.getTime() - currentPST.getTime();
+      const difference = target.getTime() - now.getTime();
       
       if (difference > 0) {
         const hours = Math.floor(difference / (1000 * 60 * 60));
