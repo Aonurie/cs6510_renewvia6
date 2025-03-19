@@ -250,7 +250,7 @@ def visualize(buildings, poles, G, power_source):
     plt.show()
 
 
-def main2(excel_path, pole_cost = 0, lv_cable_cost = 0, mv_cable_cost):
+def main2(excel_path, pole_cost = 0, lv_cable_cost = 0, mv_cable_cost = 0):
     # Read in user-given coordinate data
     df = load_data(excel_path)
     buildings = df[df['Name'] != 'Power Source'][['Latitude', 'Longitude']].values
