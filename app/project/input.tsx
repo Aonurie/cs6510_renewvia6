@@ -10,13 +10,17 @@ const Input: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [plotUrl, setPlotUrl] = useState(""); // Store the returned plot URL
   const [totalCost, setTotalCost] = useState<number | null>(null); // Store the total cost
+  const [error, setError] = useState<string | null>(null);
 
   // Update this URL with your actual backend URL
   //const BACKEND_URL = "https://cs6510-renewvia6-kk01.onrender.com";
 
-  const handleCsvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {  // Changed from handleExcelFileChange
+  const handleCsvFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setCsvFile(e.target.files[0]);  // Changed from setExcelFile
+      setCsvFile(e.target.files[0]);
+      setError(null); // Clear any previous errors
+      setPlotUrl(""); // Clear the previous plot
+      setTotalCost(null); // Clear the previous cost
     }
   };
 
@@ -25,9 +29,10 @@ const Input: React.FC = () => {
     setLoading(true);
     setPlotUrl("");
     setTotalCost(null);
+    setError(null);
 
     if (!csvFile) {
-      alert("Please upload a CSV file.");
+      setError("Please upload a CSV file.");
       setLoading(false);
       return;
     }
@@ -39,10 +44,17 @@ const Input: React.FC = () => {
     formData.append("lvCablesCost", lvCablesCost || "0");
 
     try {
+      // Create an AbortController for the timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout
+
       const response = await fetch("/api/run-script", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -50,12 +62,22 @@ const Input: React.FC = () => {
       }
 
       const result = await response.json();
-      const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}`;
+      // Add timestamp to prevent caching
+      const timestamp = new Date().getTime();
+      const fullPlotUrl = `https://cs6510-renewvia6-kk01.onrender.com${result.plot_url}?t=${timestamp}`;
       setPlotUrl(fullPlotUrl);
       setTotalCost(result.total_cost);
     } catch (error) {
       console.error("Error:", error);
-      alert(error instanceof Error ? error.message : "Error processing the request.");
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          setError("Request timed out. The server is warming up. Please try again in a few moments.");
+        } else {
+          setError(error.message);
+        }
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -68,8 +90,8 @@ const Input: React.FC = () => {
         <input 
           type="file" 
           id="csvFile" 
-          accept=".csv"  // Changed from .xls,.xlsx
-          onChange={handleCsvFileChange}  // Changed from handleExcelFileChange
+          accept=".csv"
+          onChange={handleCsvFileChange}
         />
       </div>
       <div style={{ marginBottom: "1rem" }}>
@@ -88,10 +110,21 @@ const Input: React.FC = () => {
         {loading ? "Processing..." : "Submit"}
       </button>
 
+      {error && (
+        <div style={{ marginTop: "1rem", color: "red" }}>
+          {error}
+        </div>
+      )}
+
       {plotUrl && (
         <div style={{ marginTop: "1rem" }}>
           <h3>Generated Plot:</h3>
-          <img src={plotUrl} alt="Generated Plot" style={{ width: "100%", maxWidth: "500px" }} />
+          <img 
+            src={plotUrl} 
+            alt="Generated Plot" 
+            style={{ width: "100%", maxWidth: "500px" }}
+            key={plotUrl} // Add key to force re-render
+          />
           {totalCost !== null && (
             <div style={{ marginTop: "1rem" }}>
               <h3>Total Cost:</h3>
