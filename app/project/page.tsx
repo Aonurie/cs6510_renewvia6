@@ -29,10 +29,10 @@ export default function ProjectPage() {
       </div>
       {/* Two Download Links Section */}
       <div style={{ marginBottom: "1rem" }}>
-        <a href="/public/files/BuildingCoordinate1.csv" download="BuildingCoordinate1.csv" style={{ marginRight: "1rem" }}>
+        <a href="/files/BuildingCoordinate1.csv" download="BuildingCoordinate1.csv" style={{ marginRight: "1rem" }}>
           Download Test Data 1 CSV 
         </a>
-        <a href="/public/files/BuildingCoordinate(2).csv" download="BuildingCoordinate(2).csv">
+        <a href="/files/BuildingCoordinate(2).csv" download="BuildingCoordinate(2).csv">
           Download Test Data 2 CSV
         </a>
       </div>
