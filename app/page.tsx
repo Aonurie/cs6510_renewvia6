@@ -2,48 +2,10 @@
 
 import { allPosts } from "@/.contentlayer/generated"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 export default function Home() {
   const [showMessage, setShowMessage] = useState(false);
-  const [timeLeft, setTimeLeft] = useState("");
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      // Get current date in UTC
-      const now = new Date();
-      
-      // Set target to 11:59 PM EST (which is 4:59 AM UTC next day)
-      const target = new Date(now);
-      target.setUTCHours(4, 59, 0, 0); // 4:59 AM UTC = 11:59 PM EST
-      
-      // If current time is past 4:59 AM UTC, set target to next day
-      if (now > target) {
-        target.setUTCDate(target.getUTCDate() + 1);
-      }
-
-      const difference = target.getTime() - now.getTime();
-      
-      if (difference > 0) {
-        const hours = Math.floor(difference / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
-        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-      } else {
-        setTimeLeft("Survey is now available!");
-      }
-    };
-
-    // Calculate immediately
-    calculateTimeLeft();
-    
-    // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
-    
-    // Cleanup on unmount
-    return () => clearInterval(timer);
-  }, []);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,7 +26,7 @@ export default function Home() {
         </a>
         {showMessage && (
           <div className="mt-2 p-4 bg-blue-100 text-blue-700 rounded-md">
-            {timeLeft}
+            Survey is not yet available. Please check back in 12 hours.
           </div>
         )}
       </div>
