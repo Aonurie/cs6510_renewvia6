@@ -9,6 +9,8 @@ from sklearn.neighbors import BallTree
 
 import sys
 import json
+import io
+import base64
 
 # calculates Haversine dist between two points on Earth (in meters)
 def haversine(lat1, lon1, lat2, lon2):
@@ -225,12 +227,20 @@ def visualize(buildings, poles, G, power_source):
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
     plt.title("Energy Grid Pole Placement")
-    plt.show()
+    #plt.show()
+    
+    # Save plot to bytes buffer instead of showing
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close()
+    buf.seek(0)
+    
+    return buf
 
 
-def main2(excel_path):
+def main2(file_path, poles_cost, mv_cost, lv_cost):
     # Read in user-given coordinate data
-    df = load_data(excel_path)
+    df = load_data(file_path)
     buildings = df[df['Name'] != 'Power Source'][['Latitude', 'Longitude']].values
     power_source = df[df['Name'] == 'Power Source'][['Latitude', 'Longitude']].values[0]
     
@@ -256,29 +266,9 @@ def main2(excel_path):
     for u, v, data in G.edges(data=True):
         print(f"Edge ({u} - {v}) | Weight: {data['weight']:.2f} meters")
     
-    visualize(buildings, final_poles, G, power_source)
+    buf = visualize(buildings, final_poles, G, power_source)
     
-    return final_poles, G
-
-# Example usage:
-filtered_poles, graph = main2("buildingcoordinate1.xlsx")
-
-def main():
-    if len(sys.argv) != 4:
-        print(json.dumps({"error": "Invalid arguments"}))
-        return
-
-    data = {
-        "Poles Cost": sys.argv[1],
-        "MV Cables Cost": sys.argv[2],
-        "LV Cables Cost": sys.argv[3],
-    }
-
-    print(json.dumps({"message": "Script executed successfully", "data": data}))
-
-
-if __name__ == "__main__":
-    main()
+    return final_poles, G, buf
 
 
 #### TO-DO ####
