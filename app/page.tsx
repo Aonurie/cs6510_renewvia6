@@ -2,33 +2,20 @@
 
 import { allPosts } from "@/.contentlayer/generated"
 import Link from "next/link"
-import { useState } from "react"
 
 export default function Home() {
-  const [showMessage, setShowMessage] = useState(false);
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 10000);
-  };
-
   return (
     <div className="prose dark:prose-invert">
       {/* Availability Link */}
       <div className="mb-8" style={{ marginTop: "1rem" }}>
         <a 
-          href="#" 
-          onClick={handleClick}
+          href="https://forms.office.com/Pages/ResponsePage.aspx?id=u5ghSHuuJUuLem1_MvqggwnJpZvg61RHmL8sFDtiCURUNVlBQzhMSUFJUUozWjZKNlBINko3WThNQi4u" 
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-blue-600 hover:text-blue-800 underline"
         >
           Peer Review Survey
         </a>
-        {showMessage && (
-          <div className="mt-2 p-4 bg-blue-100 text-blue-700 rounded-md">
-            Survey is not yet available. Please check back in 12 hours.
-          </div>
-        )}
       </div>
 
       {/* Static Content */}
