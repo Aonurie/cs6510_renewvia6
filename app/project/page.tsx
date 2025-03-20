@@ -32,7 +32,7 @@ export default function ProjectPage() {
           Download Test Data 2 CSV
         </a>
       </div>
-      <h1 style={{ marginBottom: "1rem" }}><strong>Upload Test GPS Coordinate Data and Enter Cost Hyperparameters</strong></h1>
+      <h1 style={{ marginBottom: "1rem" }}><strong>Upload Test GPS Coordinate Data and Enter Cost Hyperparameters(Please be patient can take a little bit to build)  </strong></h1>
       <Input />
     </div>
   );
