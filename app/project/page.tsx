@@ -10,7 +10,20 @@ export async function generateMetadata() {
 
 export default function ProjectPage() {
   return (
+    
     <div style={{ padding: "2rem" }}>
+      {/* Project Objective Header and Paragraph */}
+      <h1 style={{ marginBottom: "1rem", fontSize: "2rem", fontWeight: "bold"}}>
+        Project Objective
+      </h1>
+      <p style={{ marginBottom: "2rem", fontSize: "1.1rem", lineHeight: "1.6" }}>
+        This project aims to design an optimized and cost-effective energy grid for an area in Kenya. The goal is to factor in pole cost, 
+        low and medium voltage cables, and transformers and build an optimal power grid. The constraints given by the partner are MV max Pole
+        distance = 50m, LV max pole distance = 30m, max distance from pole to building = 20 meters, and max voltage drop 10% of source voltage. No 
+        other constraints were given.
+      </p>
+
+      {/* Explanation Paragraph */}
       <p style={{ marginBottom: "1rem", fontSize: "0.775rem", color: "#333" }}>
         *This page allows users to enter their own test data and cost hyperparameters for an optimized energy grid design.<br /><br />
         Test data: A CSV file with GPS coordinates for buildings & a power source (solar grid) in a community. The file must have the following columns: 
