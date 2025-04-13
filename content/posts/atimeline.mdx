@@ -1,0 +1,86 @@
+---
+title: Timeline 
+date: "2025-04-25"
+order: 1
+---
+## Problem
+The problem was to create a model for automatic and electricity grid pole and cable distrubtion based on contraints and to optimize cost. The input would be building locations and a powersource and the output 
+would be a completed power grid generated showing locations of poles and connections as the total cost. The main diffculty with this problem is there is not existing solution and
+the problem has not completed successfully before. A previous attempt provided by the partner used voronoi cells to attempt to create inital pole location, however, this proved unsuccessful as it did not
+create an efficient grid. Thus, the challenge was to create a new solution to this problem
+
+
+### 2/12
+Meeting with Nicholas to first understand problem and understand approach. This is where constraints such as MV max pole distance of 50m, LV max pole distance of 30m, Max dist from pole to business/home of 20m, 
+and Max voltage drop of 10% of source voltage were obtained. Additionally, we were told of cost considerations of Poles, MV cables, LV cables, transformers (needed when going from MV to LV cables), and 
+drop cables (go from pole to at most a distance of 20m away from home/business to home/business)
+
+### 2/14
+Began researching different papers to find similar papers and studies done to see if any similar work has been done. Although some ideas were found, there was no paper found that had done anything similar 
+enough to fully solve the problem or give any concrete ideas on a clear path.
+
+### 2/16
+Created Project webpage to provide information about probject and different aspects on what the team was working on.
+
+### 2/18
+Generated potential ideas to propose to Nicholas (partner) on ideas to solve problem and to get feedback. Some of the considered ideas were:
+- Clustering (k-means, DBSCAN, etc.) good for dense groups of buildings; hard to tune parameters <br />
+- Mixed-integer linear programming (MILP) optimization seems good but might be to complicated and computationally expensive than we need <br />
+- Steiner Tree <br />
+- Hexagonal grid with candidate pole at centers; ensures coverage is even with minimal poles but would then have to be adjusted to meet constraints <br />
+- Greedy MST with pruning (connects vertices without forming cycles) <br />
+- Directed Acyclic Graph (DAG) <br />
+- Minimum circle covering problem <br />
+- We could start by considering worst-case scenario where entire grid id covered with LV cables (Kalobeyei settlement is 15 sq kilometers for ex.) <br />
+
+The final ideas initally propsed were: <br />
+- **Minimum Circle Covering (MCC) for Initial Pole Placement**  
+  - Use an Integer Linear Program (e.g., with the PuLP library)
+
+- **SA/GA for Penalizing Uncovered Poles and Rewarding Fewer Poles**  
+  - Represent the problem as a Directed Acyclic Graph (DAG)  
+  - After applying the MCC (which ensures no cycles), use the DAG to represent poles as nodes and wires as edges
+
+- **Greedy Minimum Spanning Tree (MST) with Pruning or Graph Neural Network (GNN)**  
+  - Feed the DAG into a GNN with a voltage constraint (since cost and distance are handled by the MCC) and optimize using Stochastic Gradient Descent (SGD)
+
+### 2/25
+After receiving partner feedback it was discused that the ideas for parameterization would be to try Minimum Disk Covering Problem (MDC) or simple k-means to determine candidate pole placements. Then, represent the problem as Directed Acyclic Graph (DAG) 
+Nodes: power source, poles, buildings, transformers, Edges: LV, MV, and drop cables, Hyperparameters: cable lengths, costs, voltage drop, Input DAG into Graph Neural Network, Graph Attention Network (GAT) can handle different edge types (LV and HV cables) 
+and assign them different weights, Graph Convolutional Network (GCN) are simple, efficient, scalable but rely on fixed weight sharing for neighbors (wouldn’t work as well for diff cable types I don’t think but could be more efficient for initial testing), 
+Graph Transformer Networks can do a lot - look into more possibly
+
+For optimization it was thought to try renforcment learning optimization with Proximal policy optimization (PPO) w/ reward shaping good for non-convex problem space aka avoids local minima. 
+
+### 3/3 
+After dicussing problem with Professor Vempala, he wanted a front end to be built to take in data, have a baseline algorithm, and evaluate cost and pole locations. 
+
+
+### 3/16 
+Created frontend on website that allowed user to input csv that contained building and power source locations and costs. The website would then run a backend baseline algorithm to 
+generate an image of the power grid. Additionally, created test data that was based on location of area where the optimization would be employed.
+![Inital Test](/files/1.webp)
+
+### 3/18
+Updated UI of website to be more easy to use. After working on algorithm more, it was potentially to diffcult to consider transformers and so a simpler approach of attempting to just create
+a baseline optimizal grid was considered ignoring some of the constraints.
+
+### 3/26
+Created two new test data sets that are larger than previous two and based on two coordinate locations that were provided by Nicholas (partner). Continued working both GCN and ILP to try to generate an optmized algorithm to create 
+a better power grid.
+
+<a href="/files/TestData2.csv" download>
+  Download TestData2.csv
+</a>
+
+<a href="/files/TestDataset.csv" download>
+  Download TestDataset.csv
+</a>
+
+### 4/2 
+Finished attempting minimizing power poles using ILP and creating power grid of these poles. After inital testing using the large datasets, it showed promising results. Currently working on improve GCN code algorithm
+to compare results to ILP.
+![Test1](/files/2.webp)
+![Test2](/files/3.webp)
+
+
