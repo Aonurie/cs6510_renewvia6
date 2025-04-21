@@ -29,7 +29,7 @@ Deliverables include:
 ## Getting Started
 
 ### Prerequisites
-- Node.js v14+ and npm or yarn  
+- Node.js v14+ and npm
 - Python 3.8+ 
 
 ### Installation
