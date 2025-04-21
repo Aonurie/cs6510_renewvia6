@@ -39,5 +39,5 @@ Deliverables include:
    git clone https://github.com/Aonurie/cs6510_renewvia6.git
    cd cs6510_renewvia6
 Run Locally
-cd frontend
+
 npm start
