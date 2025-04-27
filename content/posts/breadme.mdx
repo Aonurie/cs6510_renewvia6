@@ -1,0 +1,94 @@
+---
+title: ReadMe 
+date: "2025-04-26"
+order: 9
+---
+
+# Website ReadMe
+## P6 Renewvia-Design
+
+### Overview
+The Renewvia Energy project aims to develop an electricity‐grid design optimizer using an optimization algorithm. Our project helps optimize pole and cable placement (and overall cost) to deliver energy in a region in Kenya. 
+Deliverables include:
+- A graph‐based optimization algorithm  
+- A research paper documenting our approach  
+- An interactive website for exploring project info and running the optimizer  
+
+### Features
+- **Project Dashboard**  
+  - Timeline  
+  - Team members & roles  
+  - Goals & updates  
+  - Presentation slides & demo  
+  - Final presentation video  
+  - Lighthouse performance scores  
+- **Grid Optimizer**  
+  - Upload a CSV of candidate pole sites & demand points  
+  - Run the algorithm in‐browser 
+  - Download/export the resulting optimized grid layout  
+
+### Built With
+- **Frontend:** Next.js – React framework for server‑side rendering and static site generation
+- **Backend:** Python 
+- **Machine Learning & Graph Algorithms:** scikit‑learn, NetworkX, scipy 
+- **Other:** pandas, NumPy, flask,matplotlib, gunicorn, openpyxl, flask-cors
+
+### Getting Started
+
+#### Prerequisites
+- Node.js v14+ and npm
+- Python 3.8+ 
+
+#### Installation
+
+1. **Clone this repository**  
+   ```bash
+   git clone https://github.com/Aonurie/cs6510_renewvia6.git
+   cd cs6510_renewvia6
+#### Run Locally
+
+1. **Start development server**  
+   ```bash
+   npm run dev
+
+# Project Code ReadMe
+
+## Graph-based Power Network Optimization
+
+This folder contains code for creating and optimizing power distribution networks using graph-based approaches. The code implements a Graph Convolutional Network (GCN) for network optimization and includes utilities for network creation and visualization.
+
+### Code Structure
+
+- `network_dag.py`: Core implementation of the power network as a directed acyclic graph (DAG)
+  - Defines node types (power source, transformer, pole, building)
+  - Implements network topology and connection logic
+  - Handles network state management and cost calculations
+
+- `GCN.py`: Graph Convolutional Network implementation
+  - Implements a 3-layer GCN for network optimization
+  - Handles network state transformations and action proposals
+  - Includes visualization utilities
+
+- `create_network.py`: Network creation and initialization utilities
+  - Implements pole placement algorithms
+  - Handles network topology creation
+  - Includes visualization functions
+
+- `test_data_generator.py`: Utilities for generating test data and scenarios
+
+### Dependencies
+
+To run the code in this folder, you'll need to install the following Python packages:
+
+```bash
+pip install torch torch-geometric numpy matplotlib pandas pulp scikit-learn
+```
+
+### Code Flow
+
+Code is run from `create_network.py` 
+- User may choose to generate test data or read in test data (csv)
+    - both options are included in the main function; uncomment/comment lines accordingly
+- The network is initialized using `NetworkDAG` class from `network_dag.py`
+- The GCN model from `GCN.py` is used to optimize the network topology
+- Results are visualized using the plotting utilities provided in each module
