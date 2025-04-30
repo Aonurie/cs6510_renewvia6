@@ -11,6 +11,8 @@ Deliverables include:
 - **Project Dashboard**  
   - Timeline  
   - Team members & roles  
+  - User Documentation
+  - User Story
   - Goals & updates  
   - Presentation slides & demo  
   - Final presentation video  
@@ -22,7 +24,7 @@ Deliverables include:
 
 ## Built With
 - **Frontend:** Next.js – React framework for server‑side rendering and static site generation
-- **Backend:** Python 
+- **Backend:** Python (Render Used to Run Backend)
 - **Machine Learning & Graph Algorithms:** scikit‑learn, NetworkX, scipy 
 - **Other:** pandas, NumPy, flask,matplotlib, gunicorn, openpyxl, flask-cors
 
@@ -47,3 +49,9 @@ or
 npm run build
 npm start
 
+
+### Folder Explainations
+- **project:** Holds code for project tab and UI for inputing csv 
+- **backend:** Holds backend code and algorithm
+- **components:** Holds text and information that holds the wepage content
+- **files** Holds test data and presentation videos for project 
