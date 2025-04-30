@@ -50,7 +50,7 @@ npm run build
 npm start
 
 
-### Folder Explainations
+### Folder Explanations
 - **project:** Holds code for project tab and UI for inputing csv 
 - **backend:** Holds backend code and algorithm
 - **components:** Holds text and information that holds the wepage content
